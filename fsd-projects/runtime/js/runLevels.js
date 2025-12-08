@@ -33,29 +33,36 @@ var runLevels = function (window) {
       obstacleImage.scaleX = scaleX;//Sets the image's X size
       obstacleImage.scaleY = scaleY;//Sets the image's Y size
 
-      obstacleHitZone.rotationalVelocity = rotation;
+      obstacleHitZone.rotationalVelocity = rotation;//Sets the rotational velocity of said obstacle
     }
 
-    function createEnemy(x, y){//Function that controls the creation of enemies
-      var enemy = game.createGameItem("enemy", 25);//Creates the enemy and makes the hit zone. Then, it stores the enemy in the variable enemy
-      var enemyImage = draw.rect(50, 50, "red");//Creates the image of the enemy and stores it to the enemyImage variable
-      enemyImage.x = -25;//Sets the enemy image's X offset to the hit zone
-      enemyImage.y = -25;//Sets the enemy image's Y offset to the hit zone
+    function createEnemy(x, y, damage, hitZone, image, offsetX, offsetY, scale, velocityX, velocityY, increaseScore, hitsToDie){//Function that controls the creation of enemies
+      var enemy = game.createGameItem("enemy", hitZone);//Creates the enemy and makes the hit zone. Then, it stores the enemy in the variable enemy
+      var enemyImage = draw.bitmap(image);//Creates the image of the enemy as a bitmap and stores it to the enemyImage variable
+      enemyImage.x = offsetX;//Sets the enemy image's X offset to the hit zone
+      enemyImage.y = offsetY;//Sets the enemy image's Y offset to the hit zone
       enemy.addChild(enemyImage);//Adds enemyImage to the enemy
       enemy.x = x;//Sets the enemies X position
       enemy.y = y;//Sets the enemies Y position
+      enemyImage.scaleX = scale;//Sets the enemy image's scale
+      enemyImage.scaleY = scale;//Sets the enemy image's scale
       game.addGameItem(enemy);//Adds enemy to the game
 
-      enemy.velocityX -= 3.5 //Moves the enemies X position over time 
+      enemy.velocityX -= velocityX//Moves the enemies X position over time 
+      enemy.velocityY += velocityY//Moves the enemies Y position over time 
       enemy.onPlayerCollision = function(){//Handles when the player collides with an enemy
-        game.changeIntegrity(-10);//Reduces the player's health
+        game.changeIntegrity(damage);//Reduces the player's health
       };
 
       enemy.onProjectileCollision = function(){//Handles when the player shoots an enemy
-        game.increaseScore(150);//Increases the player's score when they shoot an enemy
+        var hitsTaken = 0;//Variable that contains a boolean deciding whether or not an enemy has been hit by a projectile
+        hitsTaken += 1;//Adds 1 to hitsTaken for every time a projectile collides with an enemy
+        if(hitsTaken >= hitsToDie){//An IF statement that determines how many projectile hits it take for an enemy to die
+        game.increaseScore(increaseScore);//Increases the player's score when they shoot an enemy
         enemy.fadeOut();//Makes the enemy disappear on projectile collision
         //enemy.shrink();
         //enemy.flyTo(-100, -10);
+        }
       };
     }
 
@@ -98,20 +105,23 @@ var runLevels = function (window) {
       // TODO 13 goes below here
       var level = levelData[currentLevel];//Fetches the current level from the levelData array and stores it inside of the level variable
       var levelObjects = level.gameItems;//Retrieves the array gameItems and stores it in levelObjects
-      for(var i = 0; i < levelObjects.length; i++){//A FOR loop that 
-        var element = levelObjects[i];
+      for(var i = 0; i < levelObjects.length; i++){//A FOR loop that loops through the levelObjects array via the element variable and then deciding what to put based on the data of the arrays in levelData.js
+        var element = levelObjects[i];//Adds the array levelObjects, including all indexes, to the element variable
 
-        if(element.type === "obstacle"){
+        if(element.type === "obstacle"){//An IF statement controlling when an obstacle is made and which one.
+
           //x, y, damage, rotation, hitZone, image, offsetX, offsetY, scaleX, scaleY
           createObstacle(element.x, element.y, element.damage, element.rotation, element.hitZone, element.image, element.offsetX, element.offsetY, element.scaleX, element.scaleY);
         }
-        if(element.type === "enemy"){
-          createEnemy(element.x, element.y);
+        if(element.type === "enemy"){//An IF statement controlling when an enemy is made and which one.
+
+          //x, y, damage, hitZone, image, offsetX, offsetY, scale, velocityX, velocityY, increaseScore, hitsToDie
+          createEnemy(element.x, element.y, element.damage, element.hitZone, element.image, element.offsetX, element.offsetY, element.scale, element.velocityX, element.velocityY, element.increaseScore, element.hitsToDie);
         }
-        if(element.type === "reward"){
+        if(element.type === "reward"){//An IF statement controlling when a reward is made and which one.
           createReward(element.x, element.y);
         }
-        if(element.type === "levelMarker"){
+        if(element.type === "levelMarker"){//An IF statement controlling when a level marker is made and which one.
           createLevelMarker(element.x, element.y);
         }
       }
