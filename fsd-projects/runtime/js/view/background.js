@@ -40,11 +40,11 @@ var background = function (window) {
             // TODO 1:
             // this currently fills the background with an obnoxious yellow;
             // you should modify both the height and color to suit your game
-            var backgroundFill = draw.rect(canvasWidth,groundY,'white');//This draws a rectangle and stores it in the variable backgroundFill
+            var backgroundFill = draw.bitmap(canvasWidth,groundY,'img/factoryBackground1.png');//This draws a rectangle and stores it in the variable backgroundFill
             background.addChild(backgroundFill);//Adds backgroundFill as a child to backgroundObject
 
             // TODO 2: - Add a moon and starfield\
-            for(var i = 0; i < 500; i++){
+            /* for(var i = 0; i < 500; i++){
                 var circle = draw.circle(0.5, "white", "white", 1);//Creates an circle with a specific radius, border color, fill color, and alpha (opacity) and stores it in the variable circle
                 circle.x = canvasWidth * Math.random();//Sets the stars' X position on the canvas
                 circle.y = groundY * Math.random();//Sets the stars' Y position on the canvas
@@ -72,7 +72,7 @@ var background = function (window) {
             tree = draw.bitmap("img/tree.png");//Creates a bitmap object using the tree image and stores it in the variable tree, which is outside of the render function
             tree.x = 600;//Sets the X position of the tree
             tree.y = groundY - 230;// Sets the Y position of the tree
-            background.addChild(tree);//Adds tree to the background container
+            background.addChild(tree);//Adds tree to the background container */
             
         } // end of render function - DO NOT DELETE
         
