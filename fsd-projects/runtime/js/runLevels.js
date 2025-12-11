@@ -66,11 +66,11 @@ var runLevels = function (window) {
       };
     }
 
-    function createReward(x, y){//Function that controls the creation of rewards
+    function createReward(x, y, image, offsetX, offsetY){//Function that controls the creation of rewards
       var reward = game.createGameItem("reward", 25);//Creates the reward and makes the hit zone. Then, it stores the reward in the variable reward
-      var rewardImage = draw.rect(50, 50, "blue");//Creates the image of the reward and stores it to the rewardImage variable
-      rewardImage.x = -25;//Sets the reward image's X offset to the hit zone
-      rewardImage.y = -25;//Sets the reward image's Y offset to the hit zone
+      var rewardImage = draw.bitmap(image);//Creates the image of the reward and stores it to the rewardImage variable
+      rewardImage.x = offsetX;//Sets the reward image's X offset to the hit zone
+      rewardImage.y = offsetY;//Sets the reward image's Y offset to the hit zone
       reward.addChild(rewardImage);//Adds rewardImage to the reward
       reward.x = x;//Sets the reward's X position
       reward.y = y;//Sets the reward's Y position
@@ -96,7 +96,7 @@ var runLevels = function (window) {
       levelImage.scaleY = 0.75;//Sets the level marker image's scale
       game.addGameItem(levelMarker);//Adds level to the game
 
-      levelMarker.velocityX -= 2.5 //Moves the level marker's X position over time 
+      levelMarker.velocityX -= 2 //Moves the level marker's X position over time 
       levelMarker.onPlayerCollision = function(){//Handles when the player collides with a level marker
         game.changeIntegrity(15);//Increases the player's health
         game.increaseScore(250);//Increases the player's score
@@ -121,7 +121,7 @@ var runLevels = function (window) {
           createEnemy(element.x, element.y, element.damage, element.hitZone, element.image, element.offsetX, element.offsetY, element.scale, element.velocityX, element.velocityY, element.increaseScore);
         }
         if(element.type === "reward"){//An IF statement controlling when a reward is made and which one.
-          createReward(element.x, element.y);
+          createReward(element.x, element.y, element.image, element.offsetX, element.offsetY);
         }
         if(element.type === "levelMarker"){//An IF statement controlling when a level marker is made and which one.
           createLevelMarker(element.x, element.y);

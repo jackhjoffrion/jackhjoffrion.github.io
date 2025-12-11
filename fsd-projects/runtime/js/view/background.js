@@ -40,8 +40,21 @@ var background = function (window) {
             // TODO 1:
             // this currently fills the background with an obnoxious yellow;
             // you should modify both the height and color to suit your game
-            var backgroundFill = draw.bitmap(canvasWidth,groundY,'img/factoryBackground1.png');//This draws a rectangle and stores it in the variable backgroundFill
-            background.addChild(backgroundFill);//Adds backgroundFill as a child to backgroundObject
+            var backgroundImage = draw.bitmap('img/factoryBackground.png');//This draws a rectangle and stores it in the variable backgroundFill
+            background.addChild(backgroundImage);//Adds backgroundFill as a child to backgroundObject
+            
+            // Scale image to fit width
+            backgroundImage.scaleX = canvasWidth / backgroundImage.image.width;
+            backgroundImage.scaleY = backgroundImage.scaleX;
+
+            // After scaling, compute its new height
+            var scaledHeight = backgroundImage.image.height * backgroundImage.scaleY;
+
+            // Position it so the BOTTOM of the image touches the ground
+            backgroundImage.x = 0;
+            backgroundImage.y = groundY - scaledHeight;
+
+            background.addChild(backgroundImage);
 
             // TODO 2: - Add a moon and starfield\
             /* for(var i = 0; i < 500; i++){
@@ -86,7 +99,7 @@ var background = function (window) {
             var groundY = ground.y;
             
             // TODO 3: Part 2 - Move the tree!
-            tree.x = tree.x - 4;//Moves the tree to the left by substracting from its current X position
+            /*tree.x = tree.x - 4;//Moves the tree to the left by substracting from its current X position
 
             if (tree.x < -200) {//Checks if the tree has gone off to the left and resets it to the right
                 tree.x = canvasWidth;
@@ -100,7 +113,7 @@ var background = function (window) {
                     building.x = canvasWidth;//If it does, it sets building.x to canvasWidth
                 }
             }
-
+*/
         } // end of update function - DO NOT DELETE
         
         
