@@ -36,7 +36,7 @@ var runLevels = function (window) {
       obstacleHitZone.rotationalVelocity = rotation;//Sets the rotational velocity of said obstacle
     }
 
-    function createEnemy(x, y, damage, hitZone, image, offsetX, offsetY, scale, velocityX, velocityY, increaseScore/*, hitsToDie*/){//Function that controls the creation of enemies
+    function createEnemy(x, y, damage, hitZone, image, offsetX, offsetY, scale, velocityX, velocityY, increaseScore, stopEnemy/*, hitsToDie*/){//Function that controls the creation of enemies
       var enemy = game.createGameItem("enemy", hitZone);//Creates the enemy and makes the hit zone. Then, it stores the enemy in the variable enemy
       var enemyImage = draw.bitmap(image);//Creates the image of the enemy as a bitmap and stores it to the enemyImage variable
       enemyImage.x = offsetX;//Sets the enemy image's X offset to the hit zone
@@ -50,6 +50,11 @@ var runLevels = function (window) {
 
       enemy.velocityX -= velocityX//Moves the enemies X position over time 
       enemy.velocityY += velocityY//Moves the enemies Y position over time 
+      if(stopEnemy){
+        if(enemyImage.y <= groundY - 50){
+          enemy.velocityY = 0;
+        }
+      }
       enemy.onPlayerCollision = function(){//Handles when the player collides with an enemy
         game.changeIntegrity(damage);//Reduces the player's health
       };
@@ -117,8 +122,8 @@ var runLevels = function (window) {
         }
         if(element.type === "enemy"){//An IF statement controlling when an enemy is made and which one.
 
-          //x, y, damage, hitZone, image, offsetX, offsetY, scale, velocityX, velocityY, increaseScore
-          createEnemy(element.x, element.y, element.damage, element.hitZone, element.image, element.offsetX, element.offsetY, element.scale, element.velocityX, element.velocityY, element.increaseScore);
+          //x, y, damage, hitZone, image, offsetX, offsetY, scale, velocityX, velocityY, increaseScore, stopEnemy
+          createEnemy(element.x, element.y, element.damage, element.hitZone, element.image, element.offsetX, element.offsetY, element.scale, element.velocityX, element.velocityY, element.increaseScore, element.stopEnemy);
         }
         if(element.type === "reward"){//An IF statement controlling when a reward is made and which one.
           createReward(element.x, element.y, element.image, element.offsetX, element.offsetY);
