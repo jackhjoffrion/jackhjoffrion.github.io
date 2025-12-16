@@ -14,7 +14,7 @@ var runLevels = function (window) {
     var levelData = window.opspark.levelData;
 
     // set this to true or false depending on if you want to see hitzones
-    game.setDebugMode(true);
+    game.setDebugMode(false);
 
     // TODOs 5 through 11 go here
     // BEGIN EDITING YOUR CODE HERE
@@ -71,7 +71,7 @@ var runLevels = function (window) {
       };
     }
 
-    function createReward(x, y, image, offsetX, offsetY){//Function that controls the creation of rewards
+    function createReward(x, y, image, offsetX, offsetY, scale){//Function that controls the creation of rewards
       var reward = game.createGameItem("reward", 25);//Creates the reward and makes the hit zone. Then, it stores the reward in the variable reward
       var rewardImage = draw.bitmap(image);//Creates the image of the reward and stores it to the rewardImage variable
       rewardImage.x = offsetX;//Sets the reward image's X offset to the hit zone
@@ -79,12 +79,14 @@ var runLevels = function (window) {
       reward.addChild(rewardImage);//Adds rewardImage to the reward
       reward.x = x;//Sets the reward's X position
       reward.y = y;//Sets the reward's Y position
+      rewardImage.scaleX = scale;//Sets the reward image's scale
+      rewardImage.scaleY = scale;//Sets the reward image's scale
       game.addGameItem(reward);//Adds reward to the game
 
       reward.velocityX -= 2.5 //Moves the reward's X position over time 
       reward.onPlayerCollision = function(){//Handles when the player collides with a reward
-        game.changeIntegrity(10);//Increases the player's health
-        game.increaseScore(450);//Increases the player's score
+        game.changeIntegrity(25);//Increases the player's health
+        game.increaseScore(500);//Increases the player's score
         reward.fadeOut();//Causes the reward to disappear
       };
     }
@@ -126,7 +128,7 @@ var runLevels = function (window) {
           createEnemy(element.x, element.y, element.damage, element.hitZone, element.image, element.offsetX, element.offsetY, element.scale, element.velocityX, element.velocityY, element.increaseScore, element.stopEnemy);
         }
         if(element.type === "reward"){//An IF statement controlling when a reward is made and which one.
-          createReward(element.x, element.y, element.image, element.offsetX, element.offsetY);
+          createReward(element.x, element.y, element.image, element.offsetX, element.offsetY, element.scale);
         }
         if(element.type === "levelMarker"){//An IF statement controlling when a level marker is made and which one.
           createLevelMarker(element.x, element.y);
